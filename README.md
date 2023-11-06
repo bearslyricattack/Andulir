@@ -89,8 +89,7 @@ examplemapping表征用例的状态,此标签的个数取决于注解中的value
 parametermapping表征参数的状态,type为参数的类型(全限定名),value为参数的值.第一次生成的时候其值为根据其类型自动生成的随机数据.
 
 当项目第一次启动的时候,不仅仅会生成文件,还会对status为0的方法进行一次测试,并把相关的测试结果输出到控制台:
-
-![QQ截图20231105231112](http://bearsblog.oss-cn-beijing.aliyuncs.com/img/QQ截图20231105231112.png)
+![QQ截图20231106110500](http://bearsblog.oss-cn-beijing.aliyuncs.com/img/QQ截图20231106110500.png)
 
 ### 1.3.2 修改用例:
 
