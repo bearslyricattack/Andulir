@@ -1,7 +1,11 @@
 # Andulir
+
 一款极简,协同的接口自动化测试工具,面向 `SpringBoot` 和 `Spring Cloud` ,为小型开发团队和个人开发者准备。
 
-通过`Andulir`,你可以方便的使用注解标记你想要进行测试的接口，并在本地启动项目后使用其自动的生成数据进行测试。并在控制台上看到相应的测试结果。
+通过`Andulir`,你可以:
+- 方便的使用注解标记你想要进行测试的接口
+- 在本地启动项目后使用其自动的生成数据进行测试
+- 在控制台上看到相应的测试结果。
 
 `Andulir`将会通过一个  `atest.xml` 管理所有的测试用例,如果你对测试的结果不太满意,可以在文件中对其进行修改,再修改后再次运行项目时仍然会对之前的用例进行测试.
 
@@ -16,16 +20,22 @@
 在项目根目录内，进行拉取：
 
 ```bash
+# 原仓库
+git clone https://github.com/bearslyricattack/Andulir.git
+# Donnie 的fork仓库
 git clone https://github.com/Donnie518/Andulir.git
 ```
 
-将其设为一个模块，并进行 maven install；
+IDEA里设为模块的方式：
+1. File -> New -> Module From Existing Souces
+2. 然后在Select File or Dictionary to import 窗口 **选择 `andulir.iml` 文件（很重要）**
+3. 刷新 Maven 导入 Andulir 需要的依赖。（这里 Andulir 应该和其他项目是并列关系）
 
-在需要使用的模块里通过 `pom.xml`导入：
+最后，在需要使用的模块里通过 `pom.xml`导入：
 
 ```xml
 <dependency>
-    <groupId>org</groupId>
+    <groupId>org.andulir</groupId>
     <artifactId>andulir</artifactId>
     <version>0.0.1</version>
 </dependency>
@@ -45,10 +55,10 @@ andulir:
 
 ### 1.3.1 增加注解:
 
-整个工具只需要一个@ATest注解便可完成所有的功能,你可以使用此注解标记你希望测试的方法,并为其设置用例的个数:
+整个工具只需要一个`@ATest`注解便可完成所有的功能,你可以使用此注解在 `Controller` 层接口方法上标记你希望测试的方法,并为其设置用例的个数:
 
-```
-  @ApiOperation(value = "新增/编辑应急处置单位")
+```java
+    @ApiOperation(value = "新增/编辑应急处置单位")
     @PostMapping("/updateEmergencyResponseUnit")
     @ATest(value = 3)
     public BaseResponse<String> updateEmergencyResponseUnit(@RequestBody UpdateEmergencyResponseUnitRequest updateEmergencyResponseUnitRequest){
@@ -56,9 +66,11 @@ andulir:
     }
 ```
 
-当对接口进行足够的标记后,便可以启动项目,
-
 ### 1.3.2 启动项目
+
+当对接口进行足够的标记后,便可以启动 `Andulir`。
+
+启动方法：在main方法里直接调用 `AndulirApplication.start()` 方法。
 
 ```java
 package com.islet.example;
@@ -72,9 +84,11 @@ public class ExampleControllerTest {
 }
 ```
 
-启动后,你就可以在项目的目录下找到一个名为atest.xml的文件.(如果不存在会自动生成),并会根据带注解的方法的相关信息生成如下格式的xml文件:
+### 1.3.3 atest.xml
 
-```
+启动后,你就可以在项目的目录下找到一个名为 `atest.xml` 的文件.(如果不存在会自动生成),并会根据带注解的方法的相关信息生成如下格式的xml文件:
+
+```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <aTestEntity>
     <controllermapping>
@@ -94,18 +108,16 @@ public class ExampleControllerTest {
 </aTestEntity>
 ```
 
-atestentity是xml文件的主标签
-controllermapping表征方法属于哪个Controler类,name为类的名称(全限定名)
-methodmapping表征方法的具体信息,name是方法的名称,status是方法的状态,方法状态借鉴了git中分支合并的相关概念,当方法首次生成时,status为0(未关闭),当方法调试完成之后,手动的设置方法的status为1(已关闭)
-
-examplemapping表征用例的状态,此标签的个数取决于注解中的value属性.
-
-parametermapping表征参数的状态,type为参数的类型(全限定名),value为参数的值.第一次生成的时候其值为根据其类型自动生成的随机数据.
+- `atestentity`是xml文件的主标签
+- `controllermapping`表征方法属于哪个Controler类,name为类的名称(全限定名)
+- `methodmapping` 表征方法的具体信息,name是方法的名称,status是方法的状态,方法状态借鉴了git中分支合并的相关概念,当方法首次生成时,status为0(未关闭),当方法调试完成之后,手动的设置方法的status为1(已关闭)
+- `examplemapping`表征用例的状态,此标签的个数取决于注解中的value属性.
+- `parametermapping` 表征参数的状态,type为参数的类型(全限定名),value为参数的值.第一次生成的时候其值为根据其类型自动生成的随机数据.
 
 当项目第一次启动的时候,不仅仅会生成文件,还会对status为0的方法进行一次测试,并把相关的测试结果输出到控制台:
 ![QQ截图20231106110500](http://bearsblog.oss-cn-beijing.aliyuncs.com/img/QQ截图20231106110500.png)
 
-### 1.3.3 修改用例:
+### 1.3.4 修改用例:
 
 当你看到自己新编写或者修改的接口的第一次测试数据后,会出现两种情况:
 
@@ -113,7 +125,7 @@ parametermapping表征参数的状态,type为参数的类型(全限定名),value
 
 2.随机生成的测试数据存在问题,那么你需要修改xml文件中对应的用例的数据,然后再次启动项目,这样Andulir会根据新的用例再次测试,并同样输出结果,如此反复,只到你认为这个接口没有问题,那么就将status修改为1,测试完成.
 
-### 1.3.4 git同步:
+### 1.3.5 git同步:
 
 将atest.xml这个文件与其他的文件一起,在git等工具中进行统一的管理.
 
@@ -153,17 +165,31 @@ Andulir由三部分组成:数据解析器,数据生成器,数据测试器,这三
 
 后续可以探索使用 java parser等相关类实现此功能的路径.
 
-## 3.2 请求类测试:
+## 3.2 请求类测试（接口的参数解析优化）:
 
 目前对请求类和List<>的适配不够完善,只有在parser和 generator中实现此功能,而测试时对其支持还不够完善.
 
+当前的项目在需要测试的接口的参数过于复杂的时候（比如出现请求类中嵌套list，list的对象又是复杂的请求类）会出现无法正确的解析接口的参数，导致自动化测试无法进行的情况出现。（预估此项改进会相对比较复杂）
+
+解决这个问题，可选的思路是参考open-feign的源码中关于参数解析的部分，重新设计新的实现。
+
 ## 3.3 引入方式:
 
-目前的引入只能通过源代码引入,过于丑陋了,后续探索通过依赖的方式引入项目.
+目前的引入下载源代码模块 + 依赖引入，后续考虑上传 Maven 相关服务器，继续简化引入流程。
 
-> Donnie518 正在解决此问题
+## 3.4 bug修复以及健壮性的提高：
 
-另外在工具运行过程中,会出现一些bug和未处理的异常,容错性仍需进一步提高.
+目前的程序完全没有健壮性，如果在运行过程出现什么问题会直接报错并退出。
+
+尝试为程序增加异常处理，容错机制等功能。
+
+## 3.5 自动化测试：
+
+结合jenkins或者github runner 实现在自动化部署之前进行指定或者全部接口的测试，实现更为完整的CI/CD流程。
+
+## 3.6 mock能力：
+
+现在的项目完全没有mock其他诸如中间件等外部依赖的能力，尝试增加以进一步简化接口测试。
 
 # 4.写在最后:
 
