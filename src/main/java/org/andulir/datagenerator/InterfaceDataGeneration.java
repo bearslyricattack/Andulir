@@ -1,4 +1,4 @@
-package com.elevator.unit.Andulir.datagenerator;
+package org.andulir.datagenerator;
 
 import java.util.ArrayList;
 import java.util.Date;

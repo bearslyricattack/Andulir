@@ -1,5 +1,4 @@
-
-package com.elevator.unit.Andulir.annotation;
+package org.andulir.annotation;
 
 
 import java.lang.annotation.ElementType;

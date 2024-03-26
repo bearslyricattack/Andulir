@@ -1,4 +1,4 @@
-package com.elevator.unit.Andulir.dataparser.entity;
+package org.andulir.dataparser.entity;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
