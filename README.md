@@ -1,11 +1,11 @@
 # Andulir
-一款极简,协同的接口自动化测试工具,面向SpirngBoot和Spring Cloud,为小型开发团队和个人开发者准备。
+一款极简,协同的接口自动化测试工具,面向 `SpringBoot` 和 `Spring Cloud` ,为小型开发团队和个人开发者准备。
 
-通过Andulir,你可以方便的使用注解标记你想要进行测试的接口，并在本地启动项目后使用其自动的生成数据进行测试。并在控制台上看到相应的测试结果。
+通过`Andulir`,你可以方便的使用注解标记你想要进行测试的接口，并在本地启动项目后使用其自动的生成数据进行测试。并在控制台上看到相应的测试结果。
 
-Andulir将会通过一个xml管理所有的测试用例,如果你对测试的结果不太满意,可以在文件中对其进行修改,再修改后再次运行项目时仍然会对之前的用例进行测试.
+`Andulir`将会通过一个  `atest.xml` 管理所有的测试用例,如果你对测试的结果不太满意,可以在文件中对其进行修改,再修改后再次运行项目时仍然会对之前的用例进行测试.
 
-当对一个接口测试完成之后，你可以修改其在xml中的tag，让框架忽略此用例，还可以将这个文件在git等版本管理工具中与源代码文件一同管理，以便于与你的开发伙伴，甚至是前端的对接人员很方便的共享这些接口的测试用例，大大减少开发中测试和沟通的成本。
+当对一个接口测试完成之后，你可以修改其在 `xml` 中的 `tag`，让框架忽略此用例，还可以将这个文件在 `git` 等版本管理工具中与源代码文件一同管理，以便于与你的开发伙伴，甚至是前端的对接人员很方便的共享这些接口的测试用例，大大减少开发中测试和沟通的成本。
 
 当项目发布到生产服务器之前，将会对所有开发人员共同管理的所有用例进行统一测试，从而构成CI/CD中的重要一环。
 
@@ -13,34 +13,32 @@ Andulir将会通过一个xml管理所有的测试用例,如果你对测试的结
 
 ## 1.1 引入：
 
-目前暂未支持依赖等引入方式，可以通过获取源代码后粘贴到自己的项目中来引入本工具。
+在项目根目录内，进行拉取：
+
+```bash
+git clone https://github.com/Donnie518/Andulir.git
+```
+
+将其设为一个模块，并进行 maven install；
+
+在需要使用的模块里通过 `pom.xml`导入：
+
+```xml
+<dependency>
+    <groupId>org</groupId>
+    <artifactId>andulir</artifactId>
+    <version>0.0.1</version>
+</dependency>
+```
 
 ## 1.2 配置：
 
-Andulir主打的就是一个极简测试，所以我们尽量把所需的配置降到最低，唯一需要配置的地方是在项目的启动入口-AndulirTest处,配置项目controller包所在的位置从而确定接口扫描的范围：
+Andulir主打的就是一个极简测试，所以我们尽量把所需的配置降到最低，唯一需要配置的地方是在项目的 `application.yml` ,配置项目位置及 `controller`包所在的位置，从而确定接口扫描的范围：
 
-```
-@SpringBootApplication
-public class AndulirTest implements CommandLineRunner {
-
-
-
-    @Autowired
-    private InterfaceDataAccess interfaceDataAccess;
-
-
-    public static void main(String[] args) {
-        SpringApplication.run(AndulirTest.class, args);
-    }
-
-    @Override
-    public void run(String... args) throws JAXBException, InvocationTargetException, IllegalAccessException {
-        InterfaceDataParser interfaceDataParser = new InterfaceDataParser();
-        interfaceDataParser.interfaceFileInitialization();
-//在此处替换为controller的包名        interfaceDataParser.conversionInterfaceInformation("com.elevator.unit.controller");
-        interfaceDataAccess.test();
-    }
-}
+```yaml
+andulir:
+  basePackage: com.islet.example
+  baseControllerPackage: com.islet.example.controller
 ```
 
 ## 1.3 使用:
@@ -58,7 +56,23 @@ public class AndulirTest implements CommandLineRunner {
     }
 ```
 
-当对接口进行足够的标记后,便可以启动项目,启动后,你就可以在项目的目录下找到一个名为atest.xml的文件.(如果不存在会自动生成),并会根据带注解的方法的相关信息生成如下格式的xml文件:
+当对接口进行足够的标记后,便可以启动项目,
+
+### 1.3.2 启动项目
+
+```java
+package com.islet.example;
+
+import org.andulir.AndulirApplication;
+
+public class ExampleControllerTest {
+    public static void main(String[] args) {
+        AndulirApplication.start(args);
+    }
+}
+```
+
+启动后,你就可以在项目的目录下找到一个名为atest.xml的文件.(如果不存在会自动生成),并会根据带注解的方法的相关信息生成如下格式的xml文件:
 
 ```
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -91,7 +105,7 @@ parametermapping表征参数的状态,type为参数的类型(全限定名),value
 当项目第一次启动的时候,不仅仅会生成文件,还会对status为0的方法进行一次测试,并把相关的测试结果输出到控制台:
 ![QQ截图20231106110500](http://bearsblog.oss-cn-beijing.aliyuncs.com/img/QQ截图20231106110500.png)
 
-### 1.3.2 修改用例:
+### 1.3.3 修改用例:
 
 当你看到自己新编写或者修改的接口的第一次测试数据后,会出现两种情况:
 
@@ -99,7 +113,7 @@ parametermapping表征参数的状态,type为参数的类型(全限定名),value
 
 2.随机生成的测试数据存在问题,那么你需要修改xml文件中对应的用例的数据,然后再次启动项目,这样Andulir会根据新的用例再次测试,并同样输出结果,如此反复,只到你认为这个接口没有问题,那么就将status修改为1,测试完成.
 
-### 1.3.3 git同步:
+### 1.3.4 git同步:
 
 将atest.xml这个文件与其他的文件一起,在git等工具中进行统一的管理.
 
@@ -146,6 +160,8 @@ Andulir由三部分组成:数据解析器,数据生成器,数据测试器,这三
 ## 3.3 引入方式:
 
 目前的引入只能通过源代码引入,过于丑陋了,后续探索通过依赖的方式引入项目.
+
+> Donnie518 正在解决此问题
 
 另外在工具运行过程中,会出现一些bug和未处理的异常,容错性仍需进一步提高.
 

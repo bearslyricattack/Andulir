@@ -1,9 +1,9 @@
-package com.elevator.unit.Andulir.dataparser;
+package org.andulir.dataparser;
 
 
-import com.elevator.unit.Andulir.annotation.ATest;
-import com.elevator.unit.Andulir.datagenerator.InterfaceDataGeneration;
-import com.elevator.unit.Andulir.dataparser.entity.*;
+import org.andulir.annotation.ATest;
+import org.andulir.datagenerator.InterfaceDataGeneration;
+import org.andulir.dataparser.entity.*;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;

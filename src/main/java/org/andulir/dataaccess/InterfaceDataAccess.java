@@ -1,6 +1,6 @@
-package com.elevator.unit.Andulir.dataaccess;
+package org.andulir.dataaccess;
 
-import com.elevator.unit.Andulir.dataparser.entity.*;
+import org.andulir.dataparser.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,6 @@ import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
 
