@@ -1,0 +1,5 @@
+server:
+  port: 6667
+
+andulir:
+  scan-package: org.andulir.controller
