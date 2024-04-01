@@ -25,7 +25,7 @@ public class AndulirApplication implements CommandLineRunner {
     private InterfaceDataParser interfaceDataParser;
     @Autowired
     private InterfaceDataGenerator interfaceDataGenerator;
-    public static void main(String[] args) {
+    public static void start(String[] args) {
         SpringApplication.run(AndulirApplication.class,args);
     }
 

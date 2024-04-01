@@ -24,6 +24,8 @@
 git clone https://github.com/bearslyricattack/Andulir.git
 # Donnie 的fork仓库
 git clone https://github.com/Donnie518/Andulir.git
+# Xiangyinfly的fork仓库
+git clone https://github.com/Xiangyinfly/Andulir.git
 ```
 
 IDEA里设为模块的方式：
@@ -47,8 +49,7 @@ Andulir主打的就是一个极简测试，所以我们尽量把所需的配置�
 
 ```yaml
 andulir:
-  basePackage: com.islet.example
-  baseControllerPackage: com.islet.example.controller
+  scan-package: org.andulir.controller
 ```
 
 ## 1.3 使用:
@@ -58,12 +59,14 @@ andulir:
 整个工具只需要一个`@ATest`注解便可完成所有的功能,你可以使用此注解在 `Controller` 层接口方法上标记你希望测试的方法,并为其设置用例的个数:
 
 ```java
-    @ApiOperation(value = "新增/编辑应急处置单位")
-    @PostMapping("/updateEmergencyResponseUnit")
-    @ATest(value = 3)
-    public BaseResponse<String> updateEmergencyResponseUnit(@RequestBody UpdateEmergencyResponseUnitRequest updateEmergencyResponseUnitRequest){
-        return emergencyResponseService.updateEmergencyResponseUnit(updateEmergencyResponseUnitRequest);
-    }
+@RestController
+public class TestController {
+  @ATest(2)
+  public void test(List<User> users,Integer integer) {
+    System.out.println("test");
+  }
+}
+
 ```
 
 ### 1.3.2 启动项目
@@ -73,8 +76,6 @@ andulir:
 启动方法：在main方法里直接调用 `AndulirApplication.start()` 方法。
 
 ```java
-package com.islet.example;
-
 import org.andulir.AndulirApplication;
 
 public class ExampleControllerTest {
@@ -89,41 +90,85 @@ public class ExampleControllerTest {
 启动后,你就可以在项目的目录下找到一个名为 `atest.xml` 的文件.(如果不存在会自动生成),并会根据带注解的方法的相关信息生成如下格式的xml文件:
 
 ```xml
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<aTestEntity>
-    <controllermapping>
-        <methodmapping>
-            <examplemapping>
-                <parametermapping>
-                    <type>java.lang.Integer</type>
-                    <value>-414655465</value>
-                </parametermapping>
-            </examplemapping>
-            <isRequest>不是请求类</isRequest>
-            <name>query</name>
-            <status>0</status>
-        </methodmapping>
-        <name>com.elevator.unit.controller.InspectionItemController</name>
-    </controllermapping>
-</aTestEntity>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<aTest>
+    <controllerMapping name="com.andulir.controller.TestController">
+        <methodMapping name="test" status="2">
+            <parameterMapping>
+                <typeMapping>
+                    <name>java.util.List&lt;com.andulir.controller.User&gt;</name>
+                    <genericsMapping>
+                        <typeMapping>
+                            <name>com.andulir.controller.User</name>
+                            <attributeMapping>
+                                <typeMapping>
+                                    <name>java.lang.String</name>
+                                </typeMapping>
+                                <typeMapping>
+                                    <name>java.lang.String</name>
+                                </typeMapping>
+                                <typeMapping>
+                                    <name>com.andulir.controller.User1</name>
+                                    <attributeMapping>
+                                        <typeMapping>
+                                            <name>java.lang.Integer</name>
+                                        </typeMapping>
+                                        <typeMapping>
+                                            <name>java.util.List&lt;java.lang.Integer&gt;</name>
+                                            <genericsMapping>
+                                                <typeMapping>
+                                                    <name>java.lang.Integer</name>
+                                                </typeMapping>
+                                            </genericsMapping>
+                                        </typeMapping>
+                                    </attributeMapping>
+                                </typeMapping>
+                                <typeMapping>
+                                    <name>java.util.Date</name>
+                                </typeMapping>
+                            </attributeMapping>
+                        </typeMapping>
+                    </genericsMapping>
+                    <value>[{"name":"unlpVPdpxl","password":"3gfFVrxRyT","user1":{"integer":482706871,"list":[1664289742,1695992765,83605263,2058302144,1405561780]},"date":"2024-04-01T12:09:42.196+00:00"},{"name":"BkSiai4vAq","password":"sPDSTaYqEE","user1":{"integer":730295237,"list":[1972469971,1385152103,347125236,2109886458,1090042104]},"date":"2024-04-01T12:09:42.197+00:00"},{"name":"tZ3qpifkfS","password":"0oz_OzEKGv","user1":{"integer":875145769,"list":[164758244,1201554584,1389985343,1623168781,1245175018]},"date":"2024-04-01T12:09:42.198+00:00"},{"name":"geLhwE5Ekn","password":"U85tbCF9hp","user1":{"integer":334017606,"list":[1617920538,1033903769,1584460213,923489401,1974727827]},"date":"2024-04-01T12:09:42.199+00:00"},{"name":"Rq4BbyDaJn","password":"xS5NRlbABF","user1":{"integer":870916813,"list":[1156802735,1258239336,1987564550,1086998438,625813767]},"date":"2024-04-01T12:09:42.200+00:00"}]</value>
+                    <value>[{"name":"xy5oKPhlZn","password":"R8syTgRQOY","user1":{"integer":1393101300,"list":[1905690013,63475114,1729317625,1509695998,156541128]},"date":"2024-04-01T12:09:42.221+00:00"},{"name":"Yo9uKrys0p","password":"9jSmvRjV0S","user1":{"integer":1333699137,"list":[699448710,5893526,1985242388,1337884773,1335871702]},"date":"2024-04-01T12:09:42.222+00:00"},{"name":"3U38xWl5q_","password":"WtTCAIUDvd","user1":{"integer":1036265010,"list":[1137478221,927619360,5731438,464153964,313636219]},"date":"2024-04-01T12:09:42.222+00:00"},{"name":"SSkttTSzpt","password":"MMDG27JCBJ","user1":{"integer":410961796,"list":[520275809,1210589417,258177185,1277217926,566056391]},"date":"2024-04-01T12:09:42.223+00:00"},{"name":"oKt5oD98SA","password":"CfsZs_oTKe","user1":{"integer":1504153069,"list":[108960699,321205562,109433437,1164202919,1811251953]},"date":"2024-04-01T12:09:42.224+00:00"}]</value>
+                </typeMapping>
+                <typeMapping>
+                    <name>java.lang.Integer</name>
+                    <value>649693351</value>
+                    <value>1359726955</value>
+                </typeMapping>
+            </parameterMapping>
+        </methodMapping>
+    </controllerMapping>
+</aTest>
 ```
 
-- `atestentity`是xml文件的主标签
-- `controllermapping`表征方法属于哪个Controler类,name为类的名称(全限定名)
-- `methodmapping` 表征方法的具体信息,name是方法的名称,status是方法的状态,方法状态借鉴了git中分支合并的相关概念,当方法首次生成时,status为0(未关闭),当方法调试完成之后,手动的设置方法的status为1(已关闭)
-- `examplemapping`表征用例的状态,此标签的个数取决于注解中的value属性.
-- `parametermapping` 表征参数的状态,type为参数的类型(全限定名),value为参数的值.第一次生成的时候其值为根据其类型自动生成的随机数据.
+- `aTest`是xml文件的主标签
+- `controllerMapping`表征方法属于哪个Controller类
+  - `name`为类的名称(全限定名)
+- `methodMapping` 表征方法的具体信息
+  - `name`是方法的名称
+  - `status`是方法的状态,方法状态借鉴了git中分支合并的相关概念,当方法首次生成时,status为1(未关闭),当方法调试完成之后,手动的设置方法的status为0(已关闭).如果手动设置status大于1,就会进行status次测试
+- `parameterMapping`表征方法的参数
+- `typeMapping` 表征参数的类型,此标签的个数取决于参数的个数.
+  - `name`为参数的类型(全限定名)
+  - `value`为生成的随机测试用例
+- `attributeMapping`表征方法参数的类属性
+- `genericsMapping`表征`List`等类型的泛型
 
-当项目第一次启动的时候,不仅仅会生成文件,还会对status为0的方法进行一次测试,并把相关的测试结果输出到控制台:
+项目启动的时候扫描加了`ATest`注解的controller方法，并且根据注解的status属性的值生成随机测试用例
+![img.png](img.png)
+当项目第一次启动的时候,不仅仅会生成文件,还会对status为1的方法进行一次测试,并把相关的测试结果输出到控制台:
 ![QQ截图20231106110500](http://bearsblog.oss-cn-beijing.aliyuncs.com/img/QQ截图20231106110500.png)
 
 ### 1.3.4 修改用例:
 
 当你看到自己新编写或者修改的接口的第一次测试数据后,会出现两种情况:
 
-1.随机生成的测试数据没有问题,那么可以直接修改status为1,此接口测试完成
+1.随机生成的测试数据没有问题,那么可以直接修改status为0,此接口测试完成
 
-2.随机生成的测试数据存在问题,那么你需要修改xml文件中对应的用例的数据,然后再次启动项目,这样Andulir会根据新的用例再次测试,并同样输出结果,如此反复,只到你认为这个接口没有问题,那么就将status修改为1,测试完成.
+2.如果随机生成的测试数据存在问题,那么你需要修改xml文件中对应的用例的数据,然后再次启动项目,这样Andulir会根据新的用例再次测试,并同样输出结果,如此反复,只到你认为这个接口没有问题,那么就将status修改为0,测试完成.
 
 ### 1.3.5 git同步:
 
@@ -131,19 +176,23 @@ public class ExampleControllerTest {
 
 # 2.架构设计:
 
-Andulir由三部分组成:数据解析器,数据生成器,数据测试器,这三部分通过atest.xml文件为媒介,进行一系列的工作.
+Andulir主要由三部分组成:数据解析器,数据生成器,数据测试器,这三部分通过atest.xml文件为媒介,进行一系列的工作.
 
-## 2.1 数据解析器 dataparser:
+## 2.1 数据解析器 parser:
 
 数据解析器主要负责解析添加了注解的接口,并生成对应的xml标签,存入文件.
 
-主要是通过JAXBContext,通过把xml映射成实体类的方式处理xml文件.
+将方法每个参数解析后，通过dom4j写入xml文件.
 
-## 2.2 数据生成器 datagenerator:
+目前仅支持基本数据类型、List、自定义请求类型以及它们之间的嵌套.
+
+## 2.2 数据生成器 generator:
 
 数据生成器的主要作用是根据解析器解析出来的类型,自动的生成符合格式的数据.
 
-生成数据的主要方式是通过全限定名类型的匹配与反射.并能支持生成请求类和list的数据.
+生成数据的主要方式是通过全限定名类型的反射和podam的使用.
+
+目前支持生成基本数据类型、单层List类型、自定义请求类型以及他们之间的嵌套.
 
 ## 2.3 数据测试器 dataaccess:
 
@@ -154,6 +203,13 @@ Andulir由三部分组成:数据解析器,数据生成器,数据测试器,这三
 具体实现时,因为使用反射生成的controller对象无法注入,所以使用根据名称(applicationcontext)获取bean的形式,获取到原本存在的controller-bean从而进行测试.
 
 至于项目的自启动运行,是通过实现CommandLineRunner,并覆写run方法,从而做到在所有的bean都生成之后再开始操作.
+
+## 2.4 其他
+`AndulirConfig`文件手动注入了程序需要的一些bean
+
+`AndulirProperty`文件支持配置文件的配置
+
+`util`包中存放着程序需要使用的一些工具类
 
 # 3.拓展:
 
