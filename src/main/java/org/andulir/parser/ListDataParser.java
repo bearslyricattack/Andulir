@@ -9,10 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-
-/**
- * list类型的解析器
- */
 @Component
 public class ListDataParser implements DataParser {
     @Autowired

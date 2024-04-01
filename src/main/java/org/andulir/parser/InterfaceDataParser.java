@@ -5,11 +5,9 @@ import org.andulir.utils.TypeUtils;
 import org.andulir.utils.XMLUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Component;
@@ -29,23 +27,12 @@ public class InterfaceDataParser {
     private DataParser listDataParser;
     @Autowired
     private DataParser requestDataParser;
+    @Autowired
+    private Document document;
+    @Autowired
+    private File file;
 
-    //xml文档的根
     private Element root;
-
-    //xml文档
-    private final Document document = DocumentHelper.createDocument();
-    @Bean
-    public Document getDocument() {
-        return document;
-    }
-
-    private final File file = new File("atest.xml");
-    @Bean
-    public File getFile() {
-        return file;
-    }
-
 
     //这个方法的作用是扫描带有注解的方法,并获取其参数列表
     public void conversionInterfaceInformation(String scanPackage) {
@@ -65,7 +52,7 @@ public class InterfaceDataParser {
                         ATest annotation = method.getAnnotation(ATest.class);
                         Element methodMapping = XMLUtils.addMethodMapping(controllerMapping, method.getName(), Integer.toString(annotation.value()));
                         getMethodParameterTypesAndGenerateXML(method,methodMapping);
-                        log.info("搜索到ATest注解方法[{}]，接口相关数据已经生成。",method.getName());
+                        log.info("搜索到ATest注解方法[{}]，接口参数解析完成。",method.getName());
                     }
                 }
             } catch (ClassNotFoundException | NullPointerException e) {
@@ -95,7 +82,6 @@ public class InterfaceDataParser {
         }
     }
 
-    //初始化xml
     public boolean initXML() {
         root = XMLUtils.initXmlFile(document,file);
         return root != null;

@@ -9,10 +9,6 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.List;
-
-/**
- * 自定义请求类的解析器
- */
 @Component
 public class RequestDataParser implements DataParser {
     @Autowired
