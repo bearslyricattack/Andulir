@@ -10,9 +10,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-/**
- * 生成和解析xml的工具类，使用dom4j
- */
 @Slf4j
 public class XMLUtils {
 

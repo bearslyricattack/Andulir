@@ -7,9 +7,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * 关于类型的工具类
- */
 public class TypeUtils {
     public static boolean isBasicType(Parameter parameter) {
         Class<?> parameterType = parameter.getType();
