@@ -1,6 +1,7 @@
 package org.andulir;
 import org.andulir.config.AndulirProperty;
 import org.andulir.dataaccess.InterfaceDataAccess;
+import org.andulir.generator.InterfaceDataGenerator;
 import org.andulir.parser.InterfaceDataParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,8 +23,9 @@ public class AndulirApplication implements CommandLineRunner {
     private AndulirProperty property;
     @Autowired
     private InterfaceDataParser interfaceDataParser;
-
-    public static void start(String[] args) {
+    @Autowired
+    private InterfaceDataGenerator interfaceDataGenerator;
+    public static void main(String[] args) {
         SpringApplication.run(AndulirApplication.class,args);
     }
 
@@ -32,6 +34,7 @@ public class AndulirApplication implements CommandLineRunner {
         boolean flag = interfaceDataParser.initXML();
         if (flag) {
             interfaceDataParser.conversionInterfaceInformation(property.getScanPackage());
+            interfaceDataGenerator.generateRandomData();
         }
 //        interfaceDataAccess.test();
     }

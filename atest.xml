@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<aTest>
+  <controllerMapping name="org.andulir.controller.TestController">
+    <methodMapping name="test" status="2">
+      <parameterMapping>
+        <typeMapping>
+          <name>java.util.List&lt;org.andulir.controller.User&gt;</name>
+          <genericsMapping>
+            <typeMapping>
+              <name>org.andulir.controller.User</name>
+              <attributeMapping>
+                <typeMapping>
+                  <name>java.lang.String</name>
+                </typeMapping>
+                <typeMapping>
+                  <name>java.lang.String</name>
+                </typeMapping>
+                <typeMapping>
+                  <name>org.andulir.controller.User1</name>
+                  <attributeMapping>
+                    <typeMapping>
+                      <name>java.lang.Integer</name>
+                    </typeMapping>
+                    <typeMapping>
+                      <name>java.util.List&lt;java.lang.Integer&gt;</name>
+                      <genericsMapping>
+                        <typeMapping>
+                          <name>java.lang.Integer</name>
+                        </typeMapping>
+                      </genericsMapping>
+                    </typeMapping>
+                  </attributeMapping>
+                </typeMapping>
+                <typeMapping>
+                  <name>java.util.Date</name>
+                </typeMapping>
+              </attributeMapping>
+            </typeMapping>
+          </genericsMapping>
+          <value>[{"name":"_i9UEbRUiX","password":"HHAUBXTiKH","user1":{"integer":1415228285,"list":[1293887117,619062906,1182821852,1303402208,1333897017]},"date":"2024-04-01T11:30:13.682+00:00"},{"name":"H24fMMr47H","password":"WOOkHB57Cl","user1":{"integer":719948457,"list":[315412809,2143398099,741099655,978987949,364329175]},"date":"2024-04-01T11:30:13.683+00:00"},{"name":"1TmmIsd8Zh","password":"VnMoDu9bNo","user1":{"integer":124642132,"list":[598439648,282044744,618055855,93685681,1677601996]},"date":"2024-04-01T11:30:13.684+00:00"},{"name":"EOsiUc7Nz0","password":"qB5sAAtcpD","user1":{"integer":1091056822,"list":[1226159046,1590639411,183518813,1139879414,382298716]},"date":"2024-04-01T11:30:13.685+00:00"},{"name":"2v5CeNBFBm","password":"qJuLOaLfwh","user1":{"integer":2069878780,"list":[1055948606,533445838,1249936674,231582937,2135797730]},"date":"2024-04-01T11:30:13.686+00:00"}]</value>
+          <value>[{"name":"_5WKN9CQV1","password":"FlL0GAZPMw","user1":{"integer":1586263566,"list":[1190929354,1901215256,535866218,74161438,2008355943]},"date":"2024-04-01T11:30:13.704+00:00"},{"name":"mIZy9H4Ut2","password":"vZbcbRbYEB","user1":{"integer":1756488349,"list":[614836385,946308080,1170154381,1746343053,1630572105]},"date":"2024-04-01T11:30:13.705+00:00"},{"name":"bfaPL6hI7s","password":"UZxuuK8Kug","user1":{"integer":1062574332,"list":[1077313274,1360925346,1142145793,1369260500,2072623245]},"date":"2024-04-01T11:30:13.705+00:00"},{"name":"tyFp0HQnAM","password":"lgTP9IHNDp","user1":{"integer":1630220957,"list":[1955161324,615187834,1526602034,749660904,1924278263]},"date":"2024-04-01T11:30:13.706+00:00"},{"name":"7AQXMfWjTU","password":"0AeHKK10gQ","user1":{"integer":300387288,"list":[113629169,167184587,1573276828,220864995,1207506366]},"date":"2024-04-01T11:30:13.707+00:00"}]</value>
+        </typeMapping>
+        <typeMapping>
+          <name>java.lang.Integer</name>
+          <value>235606245</value>
+          <value>646626583</value>
+        </typeMapping>
+      </parameterMapping>
+    </methodMapping>
+  </controllerMapping>
+</aTest>
