@@ -3,3 +3,7 @@ server:
 
 andulir:
   scan-package: org.andulir.controller
+  thread:
+    core-size: 20
+    keep-alive-time: 10
+    max-size: 200
