@@ -6,9 +6,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "andulir")
+@ConfigurationProperties(prefix = "andulir.thread")
 @Data
 @NoArgsConstructor
-public class AndulirProperty {
-    private String scanPackage;
+public class ThreadPoolProperty {
+
+    private Integer coreSize;
+
+    private Integer maxSize;
+
+    private Integer keepAliveTime;
 }
