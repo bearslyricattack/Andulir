@@ -15,11 +15,11 @@ public class ListDataParser implements DataParser {
     @Lazy
     private DataParser requestDataParser;
     @Override
-    public void parseData(Type type, Element element) {
+    public void parseData(Type type, Element element) throws ClassNotFoundException {
         Element typeMapping = XMLUtils.addTypeMapping(element, type.getTypeName());
         parse(type,typeMapping);
     }
-    public void parse(Type type, Element typeMapping) {
+    public void parse(Type type, Element typeMapping) throws ClassNotFoundException {
         Type genericType = type;
         if (genericType instanceof ParameterizedType) {
             ParameterizedType parameterizedType = (ParameterizedType) genericType;

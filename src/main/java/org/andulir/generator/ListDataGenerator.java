@@ -19,34 +19,23 @@ public class ListDataGenerator implements DataGenerator {
     private ObjectMapper objectMapper;
 
     @Override
-    public String generateRandomData(String typeName, Element typeMapping) {
+    public String generateRandomData(String typeName, Element typeMapping) throws ClassNotFoundException, JsonProcessingException {
         Class<?> listClass = null;
         String className = null;
         Type genericsType = null;
         int count = 0;
-        try {
-            listClass = Class.forName("java.util.List");
-            className = typeName.substring(typeName.indexOf('<') + 1, typeName.length() - 1);
-            while (className.contains("java.util.List")) {
-                count++;
-                className = className.substring(className.indexOf('<') + 1, className.length() - 1);
-            }
-
-            genericsType = Class.forName(className);
-            for (int i = 0; i < count; i++) {
-                genericsType = new ParameterizedTypeImpl(new Type[]{genericsType}, null, listClass);
-            }
-
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        listClass = Class.forName("java.util.List");
+        className = typeName.substring(typeName.indexOf('<') + 1, typeName.length() - 1);
+        while (className.contains("java.util.List")) {
+            count++;
+            className = className.substring(className.indexOf('<') + 1, className.length() - 1);
         }
 
+        genericsType = Class.forName(className);
+        for (int i = 0; i < count; i++) {
+            genericsType = new ParameterizedTypeImpl(new Type[]{genericsType}, null, listClass);
+        }
         Object value = podamFactory.manufacturePojo(listClass, genericsType);
-        try {
-            return objectMapper.writeValueAsString(value);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
+        return objectMapper.writeValueAsString(value);
     }
 }
