@@ -1,9 +1,10 @@
 package org.andulir.parser;
 
+import lombok.extern.slf4j.Slf4j;
 import org.andulir.annotation.ATest;
+import org.andulir.exception.AndulirSystemException;
 import org.andulir.utils.TypeUtils;
 import org.andulir.utils.XMLUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,23 +43,26 @@ public class InterfaceDataParser {
 
         Set<BeanDefinition> beanDefinitions = provider.findCandidateComponents(scanPackage);
         for (BeanDefinition beanDefinition : beanDefinitions) {
+            Class<?> clazz = null;
             try {
-                Class<?> clazz = Class.forName(beanDefinition.getBeanClassName());
-                Element controllerMapping = XMLUtils.addControllerMapping(root, clazz.getName());
-                Method[] methods = clazz.getDeclaredMethods();
-                for (Method method : methods) {
-                    // 处理加了注解的方法
-                    if (method.isAnnotationPresent(ATest.class)) {
-                        ATest annotation = method.getAnnotation(ATest.class);
-                        Element methodMapping = XMLUtils.addMethodMapping(controllerMapping, method.getName(), Integer.toString(annotation.value()));
+                clazz = Class.forName(beanDefinition.getBeanClassName());
+            } catch (ClassNotFoundException e) {
+                throw new AndulirSystemException("扫描注册类" + clazz + "异常！" + e.getMessage());
+            }
+            Element controllerMapping = XMLUtils.addControllerMapping(root, clazz.getName());
+            Method[] methods = clazz.getDeclaredMethods();
+            for (Method method : methods) {
+                // 处理加了注解的方法
+                if (method.isAnnotationPresent(ATest.class)) {
+                    ATest annotation = method.getAnnotation(ATest.class);
+                    Element methodMapping = XMLUtils.addMethodMapping(controllerMapping, method.getName(), Integer.toString(annotation.value()));
+                    try {
                         getMethodParameterTypesAndGenerateXML(method,methodMapping);
-                        log.info("搜索到ATest注解方法[{}]，接口参数解析完成。",method.getName());
+                    } catch (ClassNotFoundException e) {
+                        throw new AndulirSystemException(clazz + "类中" + method.getName() + "方法的参数列表解析和生成xml文件异常！" + e.getMessage());
                     }
+                    log.info("搜索到ATest注解方法[{}]，接口参数解析完成。",method.getName());
                 }
-            } catch (ClassNotFoundException | NullPointerException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
             }
         }
     }

@@ -1,7 +1,9 @@
 package org.andulir.generator;
 
-import org.andulir.utils.XMLUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
+import org.andulir.exception.AndulirSystemException;
+import org.andulir.utils.XMLUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,13 +55,24 @@ public class InterfaceDataGenerator {
                         String typeName = typeMapping.element("name").getText();
 
                         for (int i = 0; i < Integer.parseInt(status); i++) {
-                            if (typeName.contains("java.util.List")) {
-                                value = listDataGenerator.generateRandomData(typeName, typeMapping);
-                            } else if (isBasicType(typeName)) {
-                                value = basicDataGenerator.generateRandomData(typeName, typeMapping);
-                            } else {
-                                value = requestDataGenerator.generateRandomData(typeName, typeMapping);
+                            try {
+                                if (typeName.contains("java.util.List")) {
+                                    if (typeName.equals("java.util.List")) {
+                                        log.error("{}类中的{}方法的List参数没有指定泛型！", controllerName, name);
+                                        return;
+                                    }
+                                    value = listDataGenerator.generateRandomData(typeName, typeMapping);
+                                } else if (isBasicType(typeName)) {
+                                    value = basicDataGenerator.generateRandomData(typeName, typeMapping);
+                                } else {
+                                    value = requestDataGenerator.generateRandomData(typeName, typeMapping);
+                                }
+                            } catch (ClassNotFoundException e) {
+                                throw new AndulirSystemException(controllerName + "类中" + name + "方法生成随机测试用例出现异常！" + e.getMessage());
+                            } catch (JsonProcessingException e) {
+                                throw new AndulirSystemException(controllerName + "类中" + name + "方法的随机测试用例序列化过程出现异常！" + e.getMessage());
                             }
+
 
                             if (value != null) {
                                 XMLUtils.addBasicValue(typeMapping, value);

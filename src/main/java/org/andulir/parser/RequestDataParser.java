@@ -16,17 +16,13 @@ public class RequestDataParser implements DataParser {
     @Autowired
     private DataParser basicDataParser;
     @Override
-    public void parseData(Type type, Element element) {
+    public void parseData(Type type, Element element) throws ClassNotFoundException {
         String className = type.getTypeName();
         Element typeMapping = XMLUtils.addTypeMapping(element, className);
 
         // 使用反射加载类
-        Class<?> clazz = null;
-        try {
-            clazz = Class.forName(className);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        Class<?> clazz = Class.forName(className);
+
         // 获取类的所有成员变量
         Field[] fields = clazz.getDeclaredFields();
         Element attributeMapping;

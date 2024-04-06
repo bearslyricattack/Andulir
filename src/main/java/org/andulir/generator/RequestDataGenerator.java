@@ -14,20 +14,10 @@ public class RequestDataGenerator implements DataGenerator {
     @Autowired
     private ObjectMapper objectMapper;
     @Override
-    public String generateRandomData(String typeName, Element typeMapping) {
+    public String generateRandomData(String typeName, Element typeMapping) throws ClassNotFoundException, JsonProcessingException {
         Class<?> clazz = null;
-        try {
-            clazz = Class.forName(typeName);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
+        clazz = Class.forName(typeName);
         Object value = podamFactory.manufacturePojo(clazz);
-        try {
-            return objectMapper.writeValueAsString(value);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
+        return objectMapper.writeValueAsString(value);
     }
 }
